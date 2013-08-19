@@ -27,7 +27,7 @@ import PyQt4
 def timeStamped(fname, fmt='%Y-%m-%d-%H-%M-%S_{fname}'):
     return datetime.datetime.now().strftime(fmt).format(fname=fname)
 
-script_name = os.path.basename(os.path.splitext(os.path.sys.argv[0])[0])
+script_name = os.path.basename(os.path.splitext(os.path.sys.argv[0])[0])+".log"
 # script_name = timeStamped(script_name)
 logging.basicConfig(filename=script_name,
                     level=logging.DEBUG,
@@ -122,31 +122,29 @@ class CallMainWindow(QMainWindow):
                 return self.DESCRIPTOR_CALCULATORS[str(rb.text())]
 
     def find_closest_distance(self):
-        # clear stylesheet
         css_clear = """QLineEdit {
             background:;
         } """
-        self.ui.lineEdit_class1.setStyleSheet(css_clear)
-        self.ui.lineEdit_class2.setStyleSheet(css_clear)
-        self.ui.lineEdit_class3.setStyleSheet(css_clear)
 
-        distance1 = abs(self.ui.lineEdit_class1.text().toFloat()[0] -
-                        self.ui.lineEdit_icon.text().toFloat()[0])
-        distance2 = abs(self.ui.lineEdit_class2.text().toFloat()[0] -
-                        self.ui.lineEdit_icon.text().toFloat()[0])
-        distance3 = abs(self.ui.lineEdit_class3.text().toFloat()[0] -
-                        self.ui.lineEdit_icon.text().toFloat()[0])
-
-        css = """QLineEdit {
+        # highlight the closes match
+        css_highlighted_bg = """QLineEdit {
             background-color: yellow;
-            }"""
+        }"""
 
-        if distance1 < distance2:
-            self.ui.lineEdit_class1.setStyleSheet(css)
-        elif distance2 < distance3:
-            self.ui.lineEdit_class2.setStyleSheet(css)
-        else:
-            self.ui.lineEdit_class3.setStyleSheet(css)
+        icon_distance = self.ui.lineEdit_icon.text().toFloat()[0]
+        closest_distance = 10000000   # initialize this to a largest value
+        closest_lineEdit = None
+
+        for lned in self.ui.tabMinDistance.findChildren(PyQt4.QtGui.QLineEdit):
+            lned.setStyleSheet(css_clear)
+            cur_distance = lned.text().toFloat()[0]
+            distance_diff = abs(icon_distance - cur_distance)
+
+            if distance_diff < closest_distance:
+                closest_distance = distance_diff
+                closest_lineEdit = lned
+
+        closest_lineEdit.setStyleSheet(css_highlighted_bg)
 
     def on_pbtn_calculate_clicked(self):
         self.calculate_classes()
