@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Mon Aug 19 09:16:12 2013
+# Created: Mon Aug 19 13:18:49 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -134,6 +134,9 @@ class Ui_MainWindow(object):
         self.tab = QtGui.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
+        self.tab_3 = QtGui.QWidget()
+        self.tab_3.setObjectName(_fromUtf8("tab_3"))
+        self.tabWidget.addTab(self.tab_3, _fromUtf8(""))
         self.widget_iconeditor = IconWidget(self.centralwidget)
         self.widget_iconeditor.setGeometry(QtCore.QRect(710, 40, 240, 240))
         self.widget_iconeditor.setMinimumSize(QtCore.QSize(240, 240))
@@ -191,6 +194,7 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabMinDistance), _translate("MainWindow", "Minimum Distance", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Perceptron", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Adaline", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "ImageCreator", None))
         self.pbtn_calculate.setText(_translate("MainWindow", "Calculate", None))
 
 from iconwidget import IconWidget

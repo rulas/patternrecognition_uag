@@ -419,6 +419,11 @@
       <string>Adaline</string>
      </attribute>
     </widget>
+    <widget class="QWidget" name="tab_3">
+     <attribute name="title">
+      <string>ImageCreator</string>
+     </attribute>
+    </widget>
    </widget>
    <widget class="IconWidget" name="widget_iconeditor" native="true">
     <property name="geometry">
