@@ -6,7 +6,7 @@ Created on Aug 19, 2013
 import numpy as np
 
 
-class Perceptron(object):
+class PerceptronAlg(object):
     '''
         Percepton class 
     '''
@@ -60,14 +60,13 @@ class Perceptron(object):
         print "learning rate = %0.2f" % self.learning_rate
         print "weights = %s" % self.weights
         print "required decades = %d" % self.required_decades
-        
 
     def classify_vector(self, input_vector):
         weighted_sum = np.dot(input_vector, self.weights)
         return (weighted_sum, self.unit_step(weighted_sum))
 
 if __name__ == "__main__":
-    p = Perceptron(vector_size=3, threshold=0.5)
+    p = PerceptronAlg(vector_size=3, threshold=0.5)
 
     training_data = [([0, 0, 1], 0),
                      ([0, 1, 1], 1),
