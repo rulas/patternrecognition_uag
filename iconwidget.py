@@ -1,7 +1,9 @@
+import sys
 from PyQt4.QtGui import (QWidget, QImage, QSizePolicy, QPainter, QApplication,
                          QPalette, QColor)
 from PyQt4.QtCore import Qt, QRect, QPoint, pyqtProperty, QSize, pyqtSignal
-from pylab import *
+from PIL import Image
+import numpy as np
 
 
 class IconWidget(QWidget):
@@ -141,8 +143,15 @@ class IconWidget(QWidget):
             return QRect(self.zoom * i, self.zoom * j,
                          self.zoom, self.zoom)
 
-    def getImageData(self):
-        pass
+    def saveToFile(self, path):
+        # FIXTHIS: saveToFile not working
+        img_data = self.getIconData()
+        img_string = img_data.tostring()
+        size = (16, 16)  #FIX THIS PLEASE
+#         img_data = np.uint8(img_data)
+        print img_data
+        im = Image.fromstring(mode="P", size=size, data=img_string)
+        im.save(path)
 
 
 def main():
