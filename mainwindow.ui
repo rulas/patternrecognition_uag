@@ -409,20 +409,74 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab_2">
+    <widget class="QWidget" name="tabPerceptron">
      <attribute name="title">
       <string>Perceptron</string>
      </attribute>
+     <widget class="ImageEditor" name="widgetPerceptron" native="true">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>640</width>
+        <height>560</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
     </widget>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="tabAdaline">
      <attribute name="title">
       <string>Adaline</string>
      </attribute>
+     <widget class="ImageEditor" name="widgetPerceptron_2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>640</width>
+        <height>560</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
     </widget>
-    <widget class="QWidget" name="tab_3">
+    <widget class="QWidget" name="tabImageCreator">
      <attribute name="title">
       <string>ImageCreator</string>
      </attribute>
+     <widget class="ImageEditor" name="widgetImageCreator" native="true">
+      <property name="geometry">
+       <rect>
+        <x>9</x>
+        <y>9</y>
+        <width>641</width>
+        <height>571</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="IconWidget" name="widget_iconeditor" native="true">
@@ -521,6 +575,12 @@
    <class>IconWidget</class>
    <extends>QWidget</extends>
    <header location="global">iconwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ImageEditor</class>
+   <extends>QWidget</extends>
+   <header location="global">imageeditor.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

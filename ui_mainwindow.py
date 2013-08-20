@@ -9,7 +9,7 @@ import os
 import datetime
 import logging
 
-from mainwindowui import Ui_MainWindow
+from ui_mainwindow import Ui_MainWindow
 from PyQt4.QtGui import QApplication, QPixmap, QMainWindow, QWidget
 from PyQt4.QtCore import Qt
 from PIL import Image
@@ -41,7 +41,7 @@ LOGD = log.debug
 LOGI("Starting Pattern Recognition script")
 
 
-class CallMainWindow(QMainWindow):
+class MainWindow(QMainWindow):
 
     CLASS_IMAGES = "alpha.gif beta.png delta.png".split()
     DISTANCE_NORMS = {
@@ -235,6 +235,6 @@ class CallMainWindow(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    myapp = CallMainWindow()
+    myapp = MainWindow()
     myapp.show()
     sys.exit(app.exec_())
