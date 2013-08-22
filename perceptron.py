@@ -12,7 +12,7 @@ from PIL import Image
 import numpy as np
 
 from ui_perceptron import Ui_Perceptron
-from perceptronalg import PerceptronAlg
+from neural_network import PerceptronAlg
 from helper import convert_image_to_array
 from descriptors import (flat_descriptor_1,
                          flat_descriptor_2,
