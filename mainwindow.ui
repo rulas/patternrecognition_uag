@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tabMinDistance">
      <attribute name="title">
@@ -352,7 +352,7 @@
      <attribute name="title">
       <string>Perceptron</string>
      </attribute>
-     <widget class="ImageEditor" name="widgetPerceptron" native="true">
+     <widget class="Perceptron" name="widgetPerceptron" native="true">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -581,6 +581,12 @@
    <class>ImageEditor</class>
    <extends>QWidget</extends>
    <header location="global">imageeditor.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Perceptron</class>
+   <extends>QWidget</extends>
+   <header location="global">perceptron.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

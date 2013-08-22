@@ -41,6 +41,10 @@ def convert_image_to_array(image):
         #a = image.tostring()
         img_array = np.fromstring(image.tostring(), dtype=np.uint8)
         return img_array.reshape((w, h))
+    elif image.mode is "RGBA":
+        # band 3 is alpha channel
+        im = list(image.getdata(band=3))
+        return np.array(im).reshape((w, h))
     else:
         raise TypeError("Wrong Image type. Only B&W images are supported")
 

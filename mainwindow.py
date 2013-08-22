@@ -15,8 +15,9 @@ from PyQt4.QtCore import Qt
 from PIL import Image
 
 from minimum_distance import distance_norm_1, distance_norm_2, distance_norm_p
-from descriptors import (calculate_descriptor_1, calculate_descriptor_2,
-                        calculate_descriptor_3)
+from descriptors import (calculate_descriptor_1, 
+                         calculate_descriptor_2,
+                         calculate_descriptor_3)
 from helper import convert_image_to_array
 import PyQt4
 

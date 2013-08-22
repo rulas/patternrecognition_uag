@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'classinfo.ui'
 #
-# Created: Mon Aug 19 23:02:08 2013
+# Created: Tue Aug 20 01:03:23 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
