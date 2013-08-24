@@ -12,7 +12,7 @@ from PIL import Image
 import numpy as np
 
 from ui_perceptron import Ui_Perceptron
-from neural_network import PerceptronAlg
+from neural_network import PerceptronAlg, AdalineAlg
 from helper import convert_image_to_array
 from descriptors import (flat_descriptor_1,
                          flat_descriptor_2,
@@ -20,40 +20,64 @@ from descriptors import (flat_descriptor_1,
 
 
 class Perceptron(QWidget):
-    
+
     descriptors_methods = {
             "Descriptor 1": flat_descriptor_1,
             "Descriptor 2": flat_descriptor_2,
             "Descriptor 3": flat_descriptor_3}
+    
+    neuron_algorithms = {
+            "Perceptron": PerceptronAlg,
+            "Adaline": AdalineAlg}
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.ui = Ui_Perceptron()
+        self.neuron = None
         self.ui.setupUi(self)
         self.initialize_widget()
-        self.initialize_descriptors()
 
-    def initialize_descriptors(self):
+    def set_neuron(self, neuron):
+        self.NeuronAlg = neuron
+
+    def initialize_group_boxes(self):
+
+        # initialize neuron type radio buttons
+        for child in self.ui.groupBox_neuron_type.children():
+            child.pressed.connect(self.handle_neurontype_change)
+
+        # initialize descriptor radio buttons
         for child in self.ui.groupBox_descriptor.children():
             child.pressed.connect(self.handle_descriptor_change)
 
+    def handle_neurontype_change(self):
+        """
+            handles a change into the neuron type radio buttons
+            and set the neuron class to the desired one
+        """
+        neuron_type = str(self.sender().text())
+        print "neuron_type = %s" % neuron_type
+        self.set_neuron(self.neuron_algorithms[neuron_type])
+    
     def handle_descriptor_change(self):
         """
             handles a change into the descriptors radio buttons and
             set the descriptormethod to the one selected.
         """
         method = str(self.sender().text())
-        print "descriptor_method changed to %s" % method
+        print "descriptor method = %s" % method
         self.descriptor_method = self.descriptors_methods[method]
         self.ui.pbtnStartTraining.setEnabled(True)
         self.ui.pbtnClassifyImage.setEnabled(False)
 
     def initialize_widget(self):
+        """
+            initialize widgets to default values
+        """
 
         ##########################################################
         # Initialize images data
         ##########################################################
-
         alpha_paths = glob.glob("./images/alpha[0-9].png")
         alpha_groupbox = self.ui.groupBox_alphaset
         self.alpha_data = self.initialize_images(alpha_paths, alpha_groupbox)
@@ -62,23 +86,24 @@ class Perceptron(QWidget):
         delta_groupbox = self.ui.groupBox_deltaset
         self.delta_data = self.initialize_images(delta_paths, delta_groupbox)
 
-        # default perceptron configuration
+        # default neuron configuration
         self.set_learning_rate(0.1)
         self.set_max_epochs(1000)
         self.set_threshold(0.0)
-        self.ui.radioButton_desc1.setChecked(True)
-        self.descriptor_method = self.descriptors_methods["Descriptor 1"]
-        
+
         # the image editor
         self.ICON_EDITOR_SIZE = (16, 16)
         self.ui.widget_iconeditor.newCleanImage(size=self.ICON_EDITOR_SIZE)
-        
-        # 
-        self.perceptron = None
-        
-        # disable classify image button until perceptron has been trained
+
+        # disable classify image button until neuron has been trained
         self.ui.pbtnClassifyImage.setEnabled(False)
 
+        # connect descriptor radio buttons to appropiate slot 
+        self.initialize_group_boxes()
+
+        # force a click on these to handle events
+        self.ui.radioButton_desc1.click()
+        self.ui.radioButtonPerceptron.click()
 
     def initialize_images(self, paths, groupbox=None):
         """
@@ -100,7 +125,7 @@ class Perceptron(QWidget):
 
         img_data = zip(paths, images, widgets)
 
-        for path, image, widget in img_data:
+        for path, _, widget in img_data:
             widget.setPixmap(QPixmap(path))
             widget.setScaledContents(True)
         return img_data
@@ -127,14 +152,11 @@ class Perceptron(QWidget):
         self.ui.lineEditMaxEpochs.setText(str(self.max_epochs))
 
     def train(self):
-#         self.get_descriptor_method()
         threshold = self.get_threshold()
         learning_rate = self.get_learning_rate()
-        max_epochs = self.get_max_epochs()
+        max_cycles = self.get_max_epochs()
 
-        self.perceptron = PerceptronAlg(vector_size=(16, 16), 
-                                   learning_rate=learning_rate,
-                                   threshold=threshold)
+        self.neuron = self.NeuronAlg(learning_rate, threshold)
 
         training_set = []
         vector_size = 0
@@ -149,17 +171,26 @@ class Perceptron(QWidget):
             descriptor = np.insert(descriptor, 0, 1)
             training_set.append((descriptor, 1))
 
-        self.perceptron.train(training_set, max_epochs, vector_size)
+        self.neuron.train(training_set, vector_size, max_cycles)
 
-    def classify_image(self):
-        # obtain draw image data
+    def obtain_draw_image_descriptor(self):
+        """
+            obtains the image from the image editor and 
+            returns the descriptor of that image based
+            on the selected descriptor.
+        """
         img_array = self.ui.widget_iconeditor.getIconData()
         descriptor = self.descriptor_method(img_array)
         descriptor = np.insert(descriptor, 0, 1)
+        return descriptor
+
+    def classify_image(self):
+        # obtain draw image data
+        descriptor = self.obtain_draw_image_descriptor()
         print descriptor
-        weighted_sum, classification = self.perceptron.classify_vector(descriptor)
-        self.ui.lineEditNumCycles.setText(str(self.perceptron.get_num_cycles()))
-        self.ui.lineEditNumWeights.setText(str(self.perceptron.get_num_weights()))
+        weighted_sum, classification = self.neuron.classify_vector(descriptor)
+        self.ui.lineEditNumCycles.setText(str(self.neuron.get_num_cycles()))
+        self.ui.lineEditNumWeights.setText(str(self.neuron.get_num_weights()))
         self.ui.lineEditNumWeightedSum.setText(str(weighted_sum))
 
         classification = "alpha" if classification == 0 else "delta"
@@ -179,7 +210,3 @@ if __name__ == '__main__':
     myapp = Perceptron()
     myapp.show()
     sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    pass
